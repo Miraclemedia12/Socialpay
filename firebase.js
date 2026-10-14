@@ -9,12 +9,13 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/11.10.0/firebas
 import { getFunctions } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_FIREBASE_APP_ID"
+  apiKey: "AIzaSyDzDjgSqldDD7DLomACfr95ZKpnCzq4_cE",
+  authDomain: "socialpay-morrish.firebaseapp.com",
+  projectId: "socialpay-morrish",
+  storageBucket: "socialpay-morrish.firebasestorage.app",
+  messagingSenderId: "736329222171",
+  appId: "1:736329222171:web:d122b49971db82c93490be",
+  measurementId: "G-VSVFVJKS3M"
 };
 
 export const firebaseConfigured = Object.values(firebaseConfig).every(
