@@ -1,0 +1,93 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
+    function isAdmin() {
+      return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.enabled != false;
+    }
+
+    // Member balance, activation, and role fields are server-managed only.
+    match /users/{uid} {
+      allow get: if isOwner(uid) || isAdmin();
+      allow list, create, update, delete: if false;
+    }
+    match /publicProfiles/{uid} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+    match /admins/{uid} {
+      allow get: if isOwner(uid);
+      allow list, create, update, delete: if false;
+    }
+    match /usernames/{username} { allow read, write: if false; }
+    match /referralCodes/{code} { allow read, write: if false; }
+
+    match /publicStats/{docId} {
+      allow read: if docId == 'summary';
+      allow write: if false;
+    }
+    match /tasks/{taskId} {
+      allow read: if (resource.data.status == 'active' && signedIn()) || isAdmin();
+      allow write: if false;
+    }
+    match /payments/{paymentId} {
+      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+      allow write: if false;
+    }
+    match /withdrawals/{withdrawalId} {
+      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+      allow write: if false;
+    }
+    match /payouts/{payoutId} {
+      allow read: if resource.data.status == 'paid' || isAdmin();
+      allow write: if false;
+    }
+    match /ledger/{entryId} {
+      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+      allow write: if false;
+    }
+    match /taskSubmissions/{submissionId} {
+      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+      allow write: if false;
+    }
+
+    match /communityMessages/{messageId} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasOnly(['uid','username','message','createdAt'])
+        && request.resource.data.message is string
+        && request.resource.data.message.size() > 0
+        && request.resource.data.message.size() <= 700;
+      allow update, delete: if isAdmin();
+    }
+    match /socialStatuses/{statusId} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasOnly(['uid','username','text','createdAt'])
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0
+        && request.resource.data.text.size() <= 400;
+      allow update, delete: if isAdmin();
+    }
+    match /ads/{adId} {
+      allow read: if (resource.data.status == 'active' && signedIn()) || isAdmin();
+      allow write: if false;
+    }
+    match /friendRequests/{requestId} {
+      allow read: if isAdmin() || (signedIn() && (resource.data.fromUid == request.auth.uid || resource.data.toUid == request.auth.uid));
+      allow write: if false;
+    }
+    match /friendships/{uid}/members/{memberId} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow write: if false;
+    }
+    match /referrals/{uid}/members/{memberId} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow write: if false;
+    }
+  }
+}

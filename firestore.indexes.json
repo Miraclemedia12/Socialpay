@@ -1,0 +1,15 @@
+{
+  "indexes": [
+    {"collectionGroup":"tasks","queryScope":"COLLECTION","fields":[{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}]},
+    {"collectionGroup":"ledger","queryScope":"COLLECTION","fields":[{"fieldPath":"uid","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}]},
+    {"collectionGroup":"payments","queryScope":"COLLECTION","fields":[{"fieldPath":"uid","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}]},
+    {"collectionGroup":"withdrawals","queryScope":"COLLECTION","fields":[{"fieldPath":"uid","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}]},
+    {"collectionGroup":"taskSubmissions","queryScope":"COLLECTION","fields":[{"fieldPath":"uid","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}]},
+    {"collectionGroup":"friendRequests","queryScope":"COLLECTION","fields":[{"fieldPath":"toUid","order":"ASCENDING"},{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}]},
+    {"collectionGroup":"payouts","queryScope":"COLLECTION","fields":[{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"paidAt","order":"DESCENDING"}]},
+    {"collectionGroup":"publicProfiles","queryScope":"COLLECTION","fields":[{"fieldPath":"usernameLower","order":"ASCENDING"}]},
+    {"collectionGroup":"members","queryScope":"COLLECTION_GROUP","fields":[{"fieldPath":"createdAt","order":"DESCENDING"}]},
+    {"collectionGroup":"members","queryScope":"COLLECTION_GROUP","fields":[{"fieldPath":"since","order":"DESCENDING"}]}
+  ],
+  "fieldOverrides": []
+}

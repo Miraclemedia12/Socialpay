@@ -1,0 +1,8 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // This starter uses HTTPS proof links. No file uploads are enabled by default.
+    // Add an explicit, size-limited authenticated path rule before enabling uploads.
+    match /{allPaths=**} { allow read, write: if false; }
+  }
+}
